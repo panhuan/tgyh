@@ -1,0 +1,15 @@
+info face="sh" size=39 unicode=0
+common lineHeight=16 scaleW=512 scaleH=512 pages=1 packed=0
+page id=0 file="number.atlas.png"
+chars count=10
+char id=49 x=67 y=196 width=25 height=38 xoffset=0 yoffset=0 xadvance=25 page=0 chnl=0 letter="1"
+char id=50 x=378 y=98 width=36 height=39 xoffset=0 yoffset=0 xadvance=36 page=0 chnl=0 letter="2"
+char id=51 x=44 y=362 width=36 height=38 xoffset=0 yoffset=0 xadvance=36 page=0 chnl=0 letter="3"
+char id=52 x=44 y=322 width=36 height=38 xoffset=0 yoffset=0 xadvance=36 page=0 chnl=0 letter="4"
+char id=53 x=440 y=54 width=37 height=38 xoffset=0 yoffset=0 xadvance=37 page=0 chnl=0 letter="5"
+char id=54 x=44 y=282 width=36 height=38 xoffset=0 yoffset=0 xadvance=36 page=0 chnl=0 letter="6"
+char id=55 x=298 y=98 width=38 height=39 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0 letter="7"
+char id=56 x=338 y=98 width=38 height=38 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0 letter="8"
+char id=57 x=299 y=139 width=36 height=38 xoffset=0 yoffset=0 xadvance=36 page=0 chnl=0 letter="9"
+char id=48 x=54 y=155 width=44 height=39 xoffset=0 yoffset=0 xadvance=44 page=0 chnl=0 letter="0"
+char id=45 x=440 y=132 width=33 height=16 xoffset=0 yoffset=0 xadvance=33 page=0 chnl=0 letter="-"

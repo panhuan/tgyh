@@ -1,0 +1,38 @@
+<particleEmitterConfig>
+  <texture name="explosion_snow.png"/>
+  <sourcePosition x="300.00" y="300.00"/>
+  <sourcePositionVariance x="714.08" y="926.82"/>
+  <speed value="149.5"/>
+  <speedVariance value="135.83"/>
+  <particleLifeSpan value="4.32"/>
+  <particleLifespanVariance value="0.81"/>
+  <angle value="85.68"/>
+  <angleVariance value="160.51"/>
+  <gravity x="-407.14" y="-70.36"/>
+  <radialAcceleration value="-224.70000000000002"/>
+  <tangentialAcceleration value="380.51"/>
+  <radialAccelVariance value="22.32"/>
+  <tangentialAccelVariance value="351.46"/>
+  <startColor red="1" green="1" blue="1" alpha="1"/>
+  <startColorVariance red="0" green="0" blue="0" alpha="0"/>
+  <finishColor red="1" green="1" blue="1" alpha="1"/>
+  <finishColorVariance red="0" green="0" blue="0" alpha="0"/>
+  <maxParticles value="150"/>
+  <startParticleSize value="13.49"/>
+  <startParticleSizeVariance value="44.44"/>
+  <finishParticleSize value="45.34"/>
+  <FinishParticleSizeVariance value="46.18"/>
+  <duration value="10000000"/>
+  <emitterType value="0"/>
+  <maxRadius value="210.70000000000002"/>
+  <maxRadiusVariance value="455.32"/>
+  <minRadius value="294.53000000000003"/>
+  <rotatePerSecond value="-317.88"/>
+  <rotatePerSecondVariance value="12.65"/>
+  <blendFuncSource value="770"/>
+  <blendFuncDestination value="1"/>
+  <rotationStart value="88.87"/>
+  <rotationStartVariance value="106.06"/>
+  <rotationEnd value="110.43"/>
+  <rotationEndVariance value="238.06"/>
+</particleEmitterConfig>

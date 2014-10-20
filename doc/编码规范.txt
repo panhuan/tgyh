@@ -1,0 +1,28 @@
+
+1，类名与文件命一致，一个文件导出一个类
+2，类名首字母均大写，ClassName
+3，公有变量首字母小写，其他单词首字母大写，appleCount, appleNum
+4，私有变量就是不希望被外部使用的变量，以下划线开头：_appleCount
+5，函数命名与变量规则相同，isRunning(), _isRunning()
+6，双下划线保留语法层使用
+7，一行只写一句代码，不要分号
+8，尽量使用对偶词汇：
+add/remove, insert/erase, begin/end, start/stop, open/close, push/pop
+create/destroy
+
+9，函数命名：
+类是主语：动词+名词、谓语+形容词，Car:isRunning(), Car:start()
+类不是主语：名词+动词+其他，Car:someoneEnter()
+
+10，宏与枚举：大写+下划线, PLAYER_COUNT
+11，tab键做格式对齐
+12，下标计数从1开始
+13，只有局部变量名字可以用缩写number, n, num
+14，编译期宏变量：下划线+大写单词，_DEBUG, _WINDOWS
+15，定义枚举、ID尽量使用字符串做值、除非必须用数字才用数字，例如：CAR_TYPE = "BMW"
+
+文件结构：
+1) 引入的外部变量
+2）文件的局部变量
+3）文件主体
+4）导出文件

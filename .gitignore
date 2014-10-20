@@ -1,0 +1,11 @@
+/client/lua/docs
+/client/lua/cache
+*.log
+*.local
+*.log.*
+*.local.*
+/server/sdkgateserver/bin
+/server/sdkbillingserver/bin
+
+/server/redis/dump.rdb
+/server/webserver/mm/phpMyAdmin

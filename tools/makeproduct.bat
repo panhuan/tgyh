@@ -1,0 +1,13 @@
+rd /S /Q "../../product/lua"
+rd /S /Q "../../product/pak"
+xcopy /S /C /Y /I "../client/bin" "../../product/bin"
+xcopy /S /C /Y /I "../client/lua" "../../product/lua"
+rd /S /Q "../../product/lua/docs"
+rd /S /Q "../../product/lua/cache"
+md "../../product/pak"
+@lua -l config -e "dofile 'src/makepak.lua' ('../client/src', '../../product/pak/src')"
+@lua -l config -e "dofile 'src/makepak.lua' ('../client/lib', '../../product/pak/lib')"
+@lua -l config -e "dofile 'src/makepak.lua' ('../base', '../../product/pak/base')"
+@lua -l config -e "dofile 'src/makeluac.lua' ('../client/init.lua', '../../product')"
+@lua -l config -e "dofile 'src/makeluac.lua' ('../base/pakutil.lua', '../../product')"
+pause

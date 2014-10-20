@@ -1,0 +1,38 @@
+<particleEmitterConfig>
+	<angle value="0.000000" />
+	<angleVariance value="360.000000" />
+	<blendFuncDestination value="1" />
+	<blendFuncSource value="1" />
+	<duration value="-1" />
+	<emitterType value="1" />
+	<finishParticleSize value="1.000000" />
+	<FinishParticleSizeVariance value="0.000000" />
+	<finishColor red="0.000000" green="0.000000" blue="0.000000" alpha="0.858824" />
+	<finishColorVariance red="0.000000" green="0.000000" blue="0.000000" alpha="0.000000" />
+	<gravity x="0.000000" y="0.000000" />
+	<maxParticles value="50.000000" />
+	<maxRadius value="100.000000" />
+	<maxRadiusVariance value="100.000000" />
+	<minRadius value="50.000000" />
+	<particleLifeSpan value="0.500000" />
+	<particleLifespanVariance value="0.500000" />
+	<radialAccelVariance value="0.000000" />
+	<radialAcceleration value="0.000000" />
+	<rotatePerSecond value="100.000000" />
+	<rotatePerSecondVariance value="100.000000" />
+	<rotationEnd value="0.000000" />
+	<rotationEndVariance value="0.000000" />
+	<rotationStart value="0.000000" />
+	<rotationStartVariance value="0.000000" />
+	<sourcePositionVariance x="0.000000" y="0.000000" />
+	<sourcePosition x="164.000000" y="223.000000" />
+	<speed value="100.000000" />
+	<speedVariance value="0.100000" />
+	<startColor red="0.000000" green="0.501961" blue="1.000000" alpha="0.000000" />
+	<startColorVariance red="0.000000" green="0.576471" blue="0.000000" alpha="1.000000" />
+	<startParticleSize value="20.000000" />
+	<startParticleSizeVariance value="10.000000" />
+	<tangentialAccelVariance value="0.000000" />
+	<tangentialAcceleration value="0.000000" />
+	<texture name="cuxin_robot_garner.png" />
+</particleEmitterConfig>

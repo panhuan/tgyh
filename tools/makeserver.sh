@@ -1,0 +1,21 @@
+
+cd `dirname $0`
+cp -rf ../server/*.sh "../../server"
+cp -rf ../server/*.lua "../../server"
+cp -rf "../server/redis" "../../server"
+cp -rf "../server/bin" "../../server"
+cp -rf "../server/clibs" "../../server"
+cp -rf "../server/sdkbillingserver/execute" "../../server/sdkbillingserver"
+cp -rf "../server/sdkgateserver/execute" "../../server/sdkgateserver"
+../server/bin/lua -l config -e "dofile 'src/makepak.lua' ('../base', '../../server/bin/base')"
+../server/bin/lua -l config -e "dofile 'src/makepak.lua' ('../server/libs', '../../server/bin/libs')"
+../server/bin/lua -l config -e "dofile 'src/makepak.lua' ('../server/shared', '../../server/bin/shared')"
+mkdir -p "../../server/welcomeserver"
+mkdir -p "../../server/gameserver"
+mkdir -p "../../server/gamecenter"
+../server/bin/lua -l config -e "dofile 'src/makeluac.lua' ('../server/welcomeserver', '../../server/welcomeserver')"
+../server/bin/lua -l config -e "dofile 'src/makeluac.lua' ('../server/gameserver', '../../server/gameserver')"
+../server/bin/lua -l config -e "dofile 'src/makeluac.lua' ('../server/gamecenter', '../../server/gamecenter')"
+../server/bin/lua -l config -e "dofile 'src/makeluac.lua' ('../server/logserver', '../../server/logserver')"
+../server/bin/lua -l config -e "dofile 'src/makeluac.lua' ('../base/pakutil.lua', '../../server')"
+find ../server -name *.log -exec rm -f {} \;

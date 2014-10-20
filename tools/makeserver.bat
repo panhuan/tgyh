@@ -1,0 +1,17 @@
+
+xcopy /C /Y /I "../server\*.sh" "../../server"
+xcopy /C /Y /I "../server\*.lua" "../../server"
+xcopy /S /C /Y /I "../server/bin" "../../server/bin"
+xcopy /S /C /Y /I "../server/clibs" "../../server/clibs"
+xcopy /S /C /Y /I "../server/sdkbillingserver/execute" "../../server/sdkbillingserver/execute"
+xcopy /S /C /Y /I "../server/sdkgateserver/execute" "../../server/sdkgateserver/execute"
+del /F /Q "../../server/sdkbillingserver/execute\*.log"
+del /F /Q "../../server/sdkgateserver/execute\*.log"
+@lua -l config -e "dofile 'src/makepak.lua' ('../base', '../../server/bin/base')"
+@lua -l config -e "dofile 'src/makepak.lua' ('../server/libs', '../../server/bin/libs')"
+@lua -l config -e "dofile 'src/makepak.lua' ('../server/shared', '../../server/bin/shared')"
+md "../../server/welcomeserver"
+md "../../server/gameserver"
+@lua -l config -e "dofile 'src/makeluac.lua' ('../server/welcomeserver', '../../server/welcomeserver')"
+@lua -l config -e "dofile 'src/makeluac.lua' ('../server/gameserver', '../../server/gameserver')"
+pause
