@@ -42,6 +42,9 @@ function class(name)
 				o.__class = _C
 				o.__tostring = string.format("object{class %s}: (%s)", name, tostring(o))
 				o = strict(o, "+", _C0)
+				if o.__init then
+					o:__init(...)
+				end
 				return o
 			end
 		}
