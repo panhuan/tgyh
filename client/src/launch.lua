@@ -229,11 +229,13 @@ local launcher = function()
 	
 	function GamePlay:checkEnemysDestroy()
 		for key, enemy in pairs(self._enemys) do
-			if not enemy._alive then
+			if not enemy:isAlive() then
 				table.remove(self._enemys, key)
 			elseif self:checkEnemySmash(enemy) then
-				ObjectFactory:destroyObject(enemy)
-				table.remove(self._enemys, key)
+				enemy:attacked()
+				if not enemy:isAlive() then
+					table.remove(self._enemys, key)
+				end
 			end
 		end
 	end
