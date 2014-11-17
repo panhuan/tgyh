@@ -41,14 +41,14 @@ function class(name)
 				end
 				o.__class = _C
 				o.__tostring = string.format("object{class %s}: (%s)", name, tostring(o))
-				o = strict(o, "+", _C0)
+				o = setmetatable(o, _C0)
 				if o.__init then
 					o:__init(...)
 				end
 				return o
 			end
 		}
-		_C = strict(_C, "rw+", _M)
+		_C = setmetatable(_C, _M)
 		rawset(_C, "__tostring", "class "..name)
 		__classes[name] = {_C = _C, _C0 = _C0}
 		

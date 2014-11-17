@@ -40,7 +40,7 @@ end
 
 if _WINDOWS then
 	function MOAIEnvironment.getDeviceSize()
-		return 320, 480
+		return 480, 320
 	end
 
 	function MOAIEnvironment.getDeviceDpi()

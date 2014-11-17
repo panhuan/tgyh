@@ -9,7 +9,6 @@ local timer = require "timer"
 local device = require "device"
 local PlatformSDK = require "logic.PlatformSDK"
 local OrderMgr = require "logic.OrderMgr"
-local NetworkTipPanel = require "windows.NetworkTipPanel"
 local Buy = require "settings.Buy"
 local ActLog = require "ActLog"
 

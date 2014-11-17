@@ -7,13 +7,11 @@ local launcher = function()
 		gettext.setlang(PREFERRED_LANGUAGES, "mo/?.mo")
 	end
 	local device = require "device"
-	local util = require "util"
 	local ui = require "ui"
 	local node = require "node"
 	local layer = require "layer"
 	local actionset = require "actionset"
 	local resource = require "resource"
-	local memory = require "memory"
 	local timerutil = require "timerutil"
 	local appcache = require "appcache"
 	local qlog = require "qlog"
@@ -31,14 +29,9 @@ local launcher = function()
 	local Player = require "logic.Player"
 	local SMSPay = require "logic.SMSPay"
 	local gm = require "gm"
-	local Task = require "logic.Task"
-	local Pet = require "settings.Pet"
 	local UserData = require "UserData"
 	local versionctrl = require "versionctrl"
-	local LuaVM = require "LuaVM"
 	local OrderMgr = require "logic.OrderMgr"
-	local RandomBox = require "logic.RandomBox"
-	local GiftBag = require "logic.GiftBag"
 	local notification = require "notification"
 	
 	-- imports
@@ -46,98 +39,13 @@ local launcher = function()
 
 	random.randomseed()
 	eventhub.define("UI_EVENT")
-	eventhub.register("UI_EVENT", "OPEN_START_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_MAIN_PANEL")
-	eventhub.register("UI_EVENT", "CLOSE_MAIN_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_GAME_PANEL")
-	eventhub.register("UI_EVENT", "MONEY_CHANGE")
-	eventhub.register("UI_EVENT", "GOLD_CHANGE")
-	eventhub.register("UI_EVENT", "AP_CHANGE")
-	eventhub.register("UI_EVENT", "OPEN_ROLE_PANEL")
-	eventhub.register("UI_EVENT", "GAME_REPLAY")
-	eventhub.register("UI_EVENT", "OPEN_PET_PANEL")
-	eventhub.register("UI_EVENT", "GAME_OVER")
-	eventhub.register("UI_EVENT", "OPEN_BUY_PANEL")
-	eventhub.register("UI_EVENT", "REFRESH_BUY_PANEL")
-	eventhub.register("UI_EVENT", "REFRESH_SHOP_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_MESSAGEBOX")
-	eventhub.register("UI_EVENT", "OPEN_REWARD_PANEL")
-	eventhub.register("UI_EVENT", "CLOSE_GAME_PANEL")
-	eventhub.register("UI_EVENT", "PET_UNLOCK")
-	eventhub.register("UI_EVENT", "PET_LEVEL_UP")
-	eventhub.register("UI_EVENT", "OPEN_ITEM_PANEL")
-	eventhub.register("UI_EVENT", "USE_ITEM")
-	eventhub.register("UI_EVENT", "ITEM_NUM_CHANGE")
-	eventhub.register("UI_EVENT", "OPEN_SYSTEM_PANEL")
-	eventhub.register("UI_EVENT", "PLAYER_LEVEL_UP")
-	eventhub.register("UI_EVENT", "RESOURCE_LOAD_COMPLETE")
-	eventhub.register("UI_EVENT", "PLAYER_EXP_CHANGE")
-	eventhub.register("UI_EVENT", "OPEN_ADDSTEP_PANEL")
-	eventhub.register("UI_EVENT", "USE_ADD_STEP")
-	eventhub.register("UI_EVENT", "NOUSE_ADD_STEP")
-	eventhub.register("UI_EVENT", "OPEN_LOAD_PANEL")
-	eventhub.register("UI_EVENT", "CLOSE_LOAD_PANEL")
-	eventhub.register("UI_EVENT", "SOUND_CHANGE")
-	eventhub.register("UI_EVENT", "OPEN_PAUSE_PANEL")
-	eventhub.register("UI_EVENT", "SWITCH_PAUSE_PANEL")
-	eventhub.register("UI_EVENT", "MISSION_UPDATE")
-	eventhub.register("UI_EVENT", "OPEN_MISSION_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_STAGE_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_EFFECT_PANEL")
-	eventhub.register("UI_EVENT", "CLOSE_EFFECT_PANEL")
-	eventhub.register("UI_EVENT", "STAR_EFFECT_PAPER")
-	eventhub.register("UI_EVENT", "STOP_EFFECT_PAPER")
-	eventhub.register("UI_EVENT", "QUIT_GAME")
-	eventhub.register("UI_EVENT", "PLAYER_STAGE_CHANGE")
-	eventhub.register("UI_EVENT", "OPEN_MONSTER_PANEL")
-	eventhub.register("UI_EVENT", "CLOSE_MONSTER_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_EVERYDAY_PANEL")
-	eventhub.register("UI_EVENT", "STAR_EFFECT_SNOW")
-	eventhub.register("UI_EVENT", "STOP_EFFECT_SNOW")
-	eventhub.register("UI_EVENT", "WINDOW_SCL_OVER")
-	eventhub.register("UI_EVENT", "OPEN_ITEM_EXPLANATION")
-	eventhub.register("UI_EVENT", "ROBOT_UNLOCK")
-	eventhub.register("UI_EVENT", "OPEN_UNLOCK_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_ACTIVITY_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_SHOP_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_TIMING_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_TIMING_HELP")
-	eventhub.register("UI_EVENT", "NOUSE_KICK_MONSTER")
-	eventhub.register("UI_EVENT", "ATTACK_FINISH")
-	eventhub.register("UI_EVENT", "PAUSE_GAME")
-	eventhub.register("UI_EVENT", "OPEN_FAILEDTIP_PANEL")
-	eventhub.register("UI_EVENT", "OPEN_TASK_PANEL")
-	eventhub.register("UI_EVENT", "TASK_NOACCEPT_COUNT")
-	eventhub.register("UI_EVENT", "SUPERSKILL_ROBOT")
-	eventhub.register("UI_EVENT", "PLAYER_PAY_FAILED")
-	eventhub.register("UI_EVENT", "PLAYER_PAY_CANCEL")
-	eventhub.register("UI_EVENT", "PLAYER_PAY_SUCCESS")
+	eventhub.register("UI_EVENT", "START_GAME")
 
 	eventhub.define("SYSTEM_EVENT")
-	eventhub.register("SYSTEM_EVENT", "CLEAR_GAME_DATA")
-	eventhub.register("SYSTEM_EVENT", "GAME_DATA_TYPE")
+	eventhub.register("SYSTEM_EVENT", "RESOURCE_LOAD_COMPLETE")
 	eventhub.register("SYSTEM_EVENT", "PLAYER_PAY")
-	eventhub.register("SYSTEM_EVENT", "OPEN_PAY_CHANNEL_PANEL")
-	eventhub.register("SYSTEM_EVENT", "RANDOM_ITEM_FINISH")
-	eventhub.register("SYSTEM_EVENT", "REQUEST_USE_ITEM_IN_GAME")
-	eventhub.register("SYSTEM_EVENT", "BUY_MONEY")
-	eventhub.register("SYSTEM_EVENT", "BUY_GOLD")
-	eventhub.register("SYSTEM_EVENT", "BUY_AP")
-	eventhub.register("SYSTEM_EVENT", "BUY_RANDOMBOX")
-	eventhub.register("SYSTEM_EVENT", "BUY_GIFT_BAG")
 	
 	eventhub.define("TASK_EVENT")
-	eventhub.register("TASK_EVENT", "TASK_INIT_FINISH")
-	eventhub.register("TASK_EVENT", "TASK_UPDATE")
-	eventhub.register("TASK_EVENT", "TASK_FINISH")
-	eventhub.register("TASK_EVENT", "ORDER_SUCCESS")
-	eventhub.register("TASK_EVENT", "MISSION_FINISH")
-	eventhub.register("TASK_EVENT", "STAGE_MONSTER")
-	eventhub.register("TASK_EVENT", "PET_LEVELUP")
-	eventhub.register("TASK_EVENT", "MISSION_STAR")
-	eventhub.register("TASK_EVENT", "MISSION_START")
-	eventhub.register("TASK_EVENT", "STAGE_START")
-	eventhub.register("TASK_EVENT", "TIMING_START")
 	
 	eventhub.define("ROOKIE_EVENT")
 	eventhub.register("ROOKIE_EVENT", "ROOKIE_TRIGGER")
@@ -179,17 +87,6 @@ local launcher = function()
 		return _gameLayer:wndToWorld(...)
 	end
 
-	stageLayer = layer.new(viewport)
-	stageLayer:setSortMode(MOAILayer2D.SORT_PRIORITY_ASCENDING)
-	stageLayer:setLayoutSize(device.ui_width, device.ui_height)
-	stageLayer._uiname = "stageLayer"
-	stageLayer:setCamera(normalCamera)
-	local _stageLayer = stageLayer
-	stageLayer = stageLayer:add(node.new())
-	stageLayer.wndToWorld = function(self, ...)
-		return _stageLayer:wndToWorld(...)
-	end
-
 	uiLayer = layer.new(viewport)
 	uiLayer:setSortMode(MOAILayer2D.SORT_PRIORITY_ASCENDING)
 	uiLayer:setLayoutSize(device.ui_width, device.ui_height)
@@ -216,7 +113,6 @@ local launcher = function()
 			local a = 0.5
 			uiLayer:setColor(a, a, a)
 			gameLayer:setColor(a, a, a)
-			stageLayer:setColor(a, a, a)
 		end
 		return add(self, o)
 	end
@@ -225,193 +121,56 @@ local launcher = function()
 		if self:getChildrenCount() == 0 then
 			uiLayer:setColor(1, 1, 1)
 			gameLayer:setColor(1, 1, 1)
-			stageLayer:setColor(1, 1, 1)
 		end
 	end
 	
-	topEffectLayer = layer.new(viewport)
-	topEffectLayer:setSortMode(MOAILayer2D.SORT_PRIORITY_ASCENDING)
-	topEffectLayer:setLayoutSize(device.ui_width, device.ui_height)
-	topEffectLayer._uiname = "topeffectLayer"
-	local _topEffectLayer = topEffectLayer
-	topEffectLayer = topEffectLayer:add(node.new())
-	topEffectLayer.wndToWorld = function(self, ...)
-		return _topEffectLayer:wndToWorld(...)
-	end
-	
 	ui.init()
-	ui.insertLayer(_stageLayer)
 	ui.insertLayer(_uiLayer)
 	ui.insertLayer(_popupLayer)
-	ui.insertLayer(_topEffectLayer)
 
 	mainAS = actionset.new()
 
 	--ui windows
 	local GameData = require "logic.GameData"
-	local StartPanel = require "windows.StartPanel"
-	local MainPanel = require "windows.MainPanel"
-	local FightTopPanel = require "windows.FightTopPanel"
-	local FinishPanel = require "windows.FinishPanel"
+	local WindowManager = require "WindowManager"
+	local ObjectFactory = require "ObjectFactory"
 	local GamePlay = require "GamePlay"
-	local PausePanel = require "windows.PausePanel"
-	local RolePanel = require "windows.RolePanel"
-	local PetPanel = require "windows.PetPanel"
-	local BuyPanel = require "windows.BuyPanel"
-	local MessageBox = require "windows.MessageBox"
-	local ItemPanel = require "windows.ItemPanel"
-	local SystemPanel = require "windows.SystemPanel"
-	local AddStepPanel = require "windows.AddStepPanel"
+	local ResDef = require "settings.ResDef"
 	local LoadPanel = require "windows.LoadPanel"
-	local RookiePanel = require "windows.RookiePanel"
-	local MissionFinishPanel = require "windows.MissionFinishPanel"
-	local MissionStartPanel = require "windows.MissionStartPanel"
-	local StageStartPanel = require "windows.StageStartPanel"
-	local TopEffectPanel = require "windows.TopEffectPanel"
-	local MonsterPanel = require "windows.MonsterPanel"
-	local EverydayAwardPanel = require "windows.EverydayAwardPanel"
-	local ItemExplanationPanel = require "windows.ItemExplanationPanel"
-	local RandomItemPanel = require "windows.RandomItemPanel"
-	local TipPanel = require "windows.TipPanel"
-	local RookieGuide = require "logic.RookieGuide"
-	local PetRobotUnlock = require "windows.PetRobotUnlock"
-	local StoryPanel = require "windows.StoryPanel"
-	local RewardPanel = require "windows.RewardPanel"
-	local ActivityPanel = require "windows.ActivityPanel"
-	local NetworkTipPanel = require "windows.NetworkTipPanel"
-	local TimingStartPanel = require "windows.TimingStartPanel"
-	local TimingHelp = require "windows.TimingHelp"
-	local PayChannelPanel = require "windows.PayChannelPanel"
-	local FailedTip = require "windows.FailedTip"
-	local TaskPanel = require "windows.TaskPanel"
-	local ShopPanel = require "windows.ShopPanel"
+	local StartPanel = require "windows.StartPanel"
 	
-	bucket.push("StartPanel")
+	WindowManager:init()
+	ObjectFactory:init()
+	GamePlay:init()
+	
+	bucket.push("LoadPanel")
 	LoadPanel:init()
-	eventhub.fire("UI_EVENT", "OPEN_LOAD_PANEL")
+	WindowManager:open("LoadPanel")
 	LoadPanel:resLoadStart()
 	bucket.pop()
 	
 	resource.beginAsyncLoad()
-	gfxutil.preLoadAssets("ui.atlas.png")
 	
 	bucket.push("UI")
-	gfxutil.preLoadAssets("effect.atlas.png")
-	gfxutil.preLoadAssets("shoppanel.atlas.png")
-	gfxutil.preLoadAssets("activitypanel.atlas.png")
 	
-	gfxutil.preLoadAssets("energy.png")
-	gfxutil.preLoadAssets("finish_exp.png")
-	gfxutil.preLoadAssets("expfillbar.png")
-	gfxutil.preLoadAssets("mission_win_exp.png")
-	
-	if device.ram > device.RAM_LO then
-		gfxutil.preLoadAssets("panel/fail_title.atlas.png")
-		gfxutil.preLoadAssets("panel/win_title.atlas.png")
-		gfxutil.preLoadAssets("panel/item_explantion_bg.atlas.png")
-		gfxutil.preLoadAssets("panel/mission_finish_1.atlas.png")
-		gfxutil.preLoadAssets("panel/mission_finish_2.atlas.png")
-		gfxutil.preLoadAssets("panel/panel_1.atlas.png")
-		gfxutil.preLoadAssets("panel/setting_panel.atlas.png")
-		gfxutil.preLoadAssets("panel/step_bg.atlas.png")
-		gfxutil.preLoadAssets("panel/system_bg.atlas.png")
-		gfxutil.preLoadAssets("panel/mask_panel.atlas.png")
-		gfxutil.preLoadAssets("panel/reward_bg.atlas.png")
-		gfxutil.preLoadAssets("panel/mission_win_bg.atlas.png")
-		gfxutil.preLoadAssets("panel/pet_unlock.atlas.png")
-		gfxutil.preLoadAssets("panel/cr_xx_di.atlas.png")
-		gfxutil.preLoadAssets("panel/petinfo_panel.atlas.png")
-		gfxutil.preLoadAssets("panel/sbts_bj.atlas.png")
-		gfxutil.preLoadAssets("panel/sb_4.atlas.png")
-		gfxutil.preLoadAssets("panel/wh_ts_1.atlas.png")
-		gfxutil.preLoadAssets("panel/js_di.atlas.png")
-		gfxutil.preLoadAssets("panel/zf_di.atlas.png")
-		gfxutil.preLoadAssets("panel/loadbg.atlas.png")
-	end
-	
-	gfxutil.preLoadAssets("background_1.jpg")
-	gfxutil.preLoadAssets("background_2.jpg")
-	gfxutil.preLoadAssets("background_3.jpg")
-	gfxutil.preLoadAssets("background_4.jpg")
-	gfxutil.preLoadAssets("background_5.jpg")
-	gfxutil.preLoadAssets("background_6.jpg")
-	
-	for _, pet in pairs (Pet.tbPetPic) do
-		gfxutil.preLoadAssets(pet.pet)
-		gfxutil.preLoadAssets(pet.robot)
-	end
-	
-	bucket.push("StoryPanel")
-	if not UserData.openingStoryPlayed then
-		gfxutil.preLoadAssets("story.atlas.png")
-	end
-	bucket.pop()
-	
-	if not UserData:rookieGuideisOver() then
-		gfxutil.preLoadAssets("rookie.atlas.png")
-	end
+	ResDef:resLoad()
 	
 	bucket.pop()
+	
 	resource.endAsyncLoad()
 
 	local function initPanel()
 		StartPanel:init()
-		MainPanel:init()
-		FightTopPanel:init()
-		FinishPanel:init()
-		GamePlay:init()
-		PausePanel:init()
-		RolePanel:init()
-		PetPanel:init()
-		BuyPanel:init()
-		MessageBox:init()
-		ItemPanel:init()
-		SystemPanel:init()
-		AddStepPanel:init()
-		RookiePanel:init()
-		MissionFinishPanel:init()
-		MissionStartPanel:init()
-		StageStartPanel:init()
-		TopEffectPanel:init()
-		MonsterPanel:init()
-		EverydayAwardPanel:init()
-		TipPanel:init() 
-		ItemExplanationPanel:init()
-		RandomItemPanel:init()
-		PetRobotUnlock:init()
-		StoryPanel:init()
-		RewardPanel:init()
-		ActivityPanel:init()
-		NetworkTipPanel:init()
-		TimingStartPanel:init()
-		TimingHelp:init()
-		FailedTip:init()
-		TaskPanel:init()
-		ShopPanel:init()
 		
 		if VERSION_OPTION:find("Qihoo") then
 			PayChannelPanel:init()
 		end
 		
-		Task:init()
-		OrderMgr:init()
-		RandomBox:init()
-		GiftBag:init()
+		
 	end
-
-	eventhub.bind("UI_EVENT", "OPEN_MAIN_PANEL", function()
-		if device.ram < device.RAM_X_HI then
-			bucket.softRelease("GamePlay", 0, MOAITexture.CPU_SIDE + MOAITexture.GPU_SIDE)
-		end
-	end)
 	
-	eventhub.bind("UI_EVENT", "OPEN_MISSION_PANEL", function()
-		resource.beginAsyncLoad()
-		GamePlay:preLoad()
-		resource.endAsyncLoad()
-	end)
 	
-	eventhub.bind("UI_EVENT", "RESOURCE_LOAD_COMPLETE", function()
+	eventhub.bind("SYSTEM_EVENT", "RESOURCE_LOAD_COMPLETE", function()
 		initPanel()
 		if  device.getConnectionType() then
 			local url = VS_LIST[math.random(#VS_LIST)]
@@ -422,19 +181,13 @@ local launcher = function()
 				end
 			end)
 		end
-		eventhub.fire("UI_EVENT", "CLOSE_LOAD_PANEL")
+		
+		WindowManager:close("LoadPanel")
+		GamePlay:start()
 		-- 回退键默认绑定推出按钮
 		deviceevent.onBackBtnPressedCallback = function()
 			Player:platformQuitReq()
 		end
-		
-		GameData:init()
-		RookieGuide:init()
-		
-		if not GameData:onLoadData() then
-			eventhub.fire("UI_EVENT", "OPEN_START_PANEL")
-		end
-		eventhub.fire("UI_EVENT", "OPEN_EFFECT_PANEL")
 	end)
 	
 	timer.new(0.1, function()

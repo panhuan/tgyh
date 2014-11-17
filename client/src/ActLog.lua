@@ -232,18 +232,6 @@ function ActLog:init(player)
 	Player.onPlayerLoginFailed = function(reason)
 		ActLog:playerLoginFailed(reason)
 	end
-
-	eventhub.bind("SYSTEM_EVENT", "BUY_MONEY", function(idx)
-		ActLog:RMBPayBegin(idx)
-	end)
-
-	eventhub.bind("SYSTEM_EVENT", "BUY_GOLD", function(idx)
-		ActLog:buyGold(idx)
-	end)
-
-	eventhub.bind("SYSTEM_EVENT", "BUY_AP", function(idx)
-		ActLog:buyAP(idx)
-	end)
 	
 	ActLog:launchGame()
 end

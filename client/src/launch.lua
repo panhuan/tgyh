@@ -29,6 +29,9 @@ local launcher = function()
 	local gfxutil = require "gfxutil"
 	local math2d = require "math2d"
 	local sound = require "sound"
+	local Formula = require "settings.Formula"
+	local ObjectFactory = require "ObjectFactory"
+	local WindowManager = require "WindowManager"
 
 	MOAISim.openWindow(_("Happy Hero"), device.width, device.height)
 
@@ -96,6 +99,9 @@ local launcher = function()
 		_list = {},
 	}
 	local GamePlay = {}
+	GamePlay._enemys = {}
+	GamePlay._bullets = {}
+	GamePlay._AS = actionset.new()
 	SpaceShip = {}
 	
 	local function index(x, y)
@@ -163,7 +169,7 @@ local launcher = function()
 	end
 	
 	shipList:addItem(SpaceShip.newItem("1_2.png", "1_5.png", "b_7.png"))
-	shipList:addItem(SpaceShip.newItem("1_2.png", "1_6.png", "b_6.png"))
+	shipList:addItem(SpaceShip.newItem("1_2.png", "1_6.png", "b_7.png"))
 	shipList:addItem(SpaceShip.newItem("1_2.png", "2_5.png?loc=0,25", "enemyBullet.png"))
 	shipList:addItem(SpaceShip.newItem("1_2.png", "2_6.png?loc=0,25", "enemyBullet2.png"))
 	
@@ -220,6 +226,60 @@ local launcher = function()
 		end
 	end
 	
+	function GamePlay:checkEnemysDestroy()
+		for key, enemy in pairs(self._enemys) do
+			if self:checkEnemySmash(enemy) then
+				ObjectFactory:destroyObject({object = enemy})
+				table.remove(self._enemys, key)
+			end
+		end
+	end
+	
+	function GamePlay:checkEnemySmash(enemy)
+		for key, var in pairs(self._bullets) do
+			local bX, bY = var:getLoc()
+			if bX <= device.ui_width / 2 and bX >= -device.ui_width / 2 and bY >= -device.ui_height / 2 and bY <= device.ui_width then
+				local bW, bH = var:getSize()
+				local eX, eY = enemy._root:getLoc()
+				local eW, eH = enemy._pic:getSize()
+				if math2d.segmentsIntersect(bX - bW / 2, bY - bH / 2, bX + bW / 2, bY + bH / 2, eX - eW / 2, eY - eH / 2, eX + eW / 2, eY + eH / 2) then
+					return true
+				end
+			else
+				var:destroy()
+				table.remove(self._bullets, key)
+			end
+		end
+		return false
+	end
+	
+	function GamePlay:checkEnemyLeave(enemy)
+		local x, y = enemy._root:getLoc()
+		if x > device.ui_width / 2 or x < -device.ui_width / 2 or y < -device.ui_height / 2 then
+			return true
+		end
+		return false
+	end
+	
+	function GamePlay:checkEnemysCreate()
+		local enemyCount = table.size(self._enemys)
+		if enemyCount <= 1 then
+			local enemys = Formula:calcEnemys(self._waveIndex)
+			return enemys
+		end
+	end
+	
+	function GamePlay:createEnemys(enemys)
+		local ship = {_root = motherShip, _pic = motherShip}
+		for _, enemyInfo in ipairs(enemys) do
+			local enemy = ObjectFactory:createObject({name = enemyInfo.name})
+			uiLayer:add(enemy._root)
+			enemy:setBornPos(enemyInfo.pos)
+			enemy:beginAttack(ship, self._AS)
+			table.insert(self._enemys, enemy)
+		end
+	end
+	
 	ui.setDefaultTouchHandler(GamePlay)
 	
 	local function shoot(theta, interval)
@@ -236,6 +296,7 @@ local launcher = function()
 					o:setRot(angle)
 					o:setLoc(v:getLoc())
 					o:moveLoc(x, y, 1, MOAIEaseType.LINEAR)
+					table.insert(GamePlay._bullets, o)
 				end
 			end
 		end
@@ -248,6 +309,14 @@ local launcher = function()
 			if GamePlay._isTouchDown then
 				shoot(GamePlay._isTouchDown, 0.05)
 			end
+			
+			GamePlay:checkEnemysDestroy()
+			
+			local enemys = GamePlay:checkEnemysCreate()
+			if enemys then
+				GamePlay:createEnemys(enemys)
+			end
+			
 			coroutine.yield()
 		end
 	end)
