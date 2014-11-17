@@ -25,8 +25,22 @@ function Enemy:destroy()
 	explosion:setBlendMode(MOAIProp.BLEND_ADD)
 	explosion.onDestroyed = function()
 		self._root:destroy()
-		self._alive = false
 	end
+end
+
+function Enemy:attacked()
+	self.hp = self.hp - 1
+	if self.hp < 1 then
+		self._alive = false
+		self:destroy()
+	else
+		local explosion = self._root:add(Sprite.new(bombRoundEffect))
+		explosion:setBlendMode(MOAIProp.BLEND_ADD)
+	end
+end
+
+function Enemy:isAlive()
+	return self._alive
 end
 
 function Enemy:setBornPos(pos)
