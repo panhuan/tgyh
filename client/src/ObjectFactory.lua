@@ -42,14 +42,14 @@ function ObjectFactory:createObject(param)
 	return object
 end
 
-function ObjectFactory:destroyObject(param)
-	if not param.object then
+function ObjectFactory:destroyObject(object)
+	if not object then
 		return
 	end
-	if param.object.destroy then
-		param.object:destroy()
+	if object.destroy then
+		object:destroy()
 	else
-		param.object._root:destroy()
+		object._root:destroy()
 	end
 	
 end

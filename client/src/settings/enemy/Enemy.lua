@@ -17,14 +17,15 @@ function Enemy:create()
 		pic = self.draw.pic[math.random(1, #self.draw.pic)]
 	end
 	self._pic = self._root:add(Image.new(pic))
+	self._alive = true
 end
 
 function Enemy:destroy()
 	local explosion = self._root:add(Sprite.new(bombRoundEffect))
 	explosion:setBlendMode(MOAIProp.BLEND_ADD)
 	explosion.onDestroyed = function()
-		print("----------destroy")
 		self._root:destroy()
+		self._alive = false
 	end
 end
 
@@ -49,24 +50,35 @@ function Enemy:setBornPos(pos)
 	self._root:setAnchor(anchor, x, y)
 end
 
-function Enemy:beginAttack(hero, as)
+function Enemy:beginAttack(hero, as, param)
 	local x, y = self._root:getLoc()
 	local w, h = self._pic:getLoc()
 	local heroX, heroY = hero._root:getLoc()
 	local heroW, heroH = hero._pic:getSize()
-	heroY = heroY - heroH - h / 2 - 50
+	heroY = heroY - heroH - h / 2
 	local timeLen = 2 / self.speed
 	if self.trajectory == "line" then
 		local offsetY = heroY - y
 		local moveas = self._root:moveLoc(0, offsetY, timeLen, MOAIEaseType.LINEAR)
 		moveas:attach(as)
+		moveas:setListener(MOAIAction.EVENT_STOP, function()
+			self._root:destroy()
+			self._alive = false
+		end)
 	elseif self.trajectory == "curve" then
+		local delay = 0
 		local tbPosX = {}
-		table.insert(tbPosX, x)
-		local times = math.random(1, 2)
-		for i = 1, times do
-			local randX = math.random(-device.ui_width / 2 + w / 2 + 10, device.ui_width / 2 - w / 2 - 10)
-			table.insert(tbPosX, randX)
+		if param and param.randX then
+			tbPosX = param.randX
+			delay = param.delay
+			timeLen = timeLen * 0.4
+		else
+			table.insert(tbPosX, x)
+			local times = math.random(2, 3)
+			for i = 1, times do
+				local randX = math.random(-device.ui_width / 2 + 100, device.ui_width / 2 - 100)
+				table.insert(tbPosX, randX)
+			end
 		end
 		local cy = interpolate.makeCurve(0, y, MOAIEaseType.LINEAR, timeLen, heroY)
 		local c = interpolate.makeCurve(0, 0, MOAIEaseType.LINEAR, timeLen, timeLen)
@@ -75,19 +87,24 @@ function Enemy:beginAttack(hero, as)
 		local oldX, oldY = 0, 0
 		local action = nil
 		action = as:run(function(dt, length)
-			if length >= c:getLength() then
-				action:stop()
-				action = nil
-			else
-				local curX, curY = fn(length)
-				curY = cy:getValueAtTime(length)
-				self._root:setLoc(curX, curY)
-				local x = curX - oldX
-				local y = curY - oldY
-				local angle = math2d.angle(x, y)
-				self._root:setRot(angle + 90)
-				oldX = curX
-				oldY = curY
+			local now = length - delay
+			if now > 0 then
+				if now >= c:getLength() then
+					action:stop()
+					action = nil
+					self._root:destroy()
+					self._alive = false
+				else
+					local curX, curY = fn(now)
+					curY = cy:getValueAtTime(now)
+					self._root:setLoc(curX, curY)
+					local x = curX - oldX
+					local y = curY - oldY
+					local angle = math2d.angle(x, y)
+					self._root:setRot(angle + 90)
+					oldX = curX
+					oldY = curY
+				end
 			end
 		end)
 	end

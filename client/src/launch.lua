@@ -228,11 +228,10 @@ local launcher = function()
 	
 	function GamePlay:checkEnemysDestroy()
 		for key, enemy in pairs(self._enemys) do
-			if self:checkEnemySmash(enemy) then
-				ObjectFactory:destroyObject({object = enemy})
+			if not enemy._alive then
 				table.remove(self._enemys, key)
-			elseif self:checkEnemyLeave(enemy) then
-				ObjectFactory:destroyObject({object = enemy})
+			elseif self:checkEnemySmash(enemy) then
+				ObjectFactory:destroyObject(enemy)
 				table.remove(self._enemys, key)
 			end
 		end
@@ -258,17 +257,9 @@ local launcher = function()
 		return false
 	end
 	
-	function GamePlay:checkEnemyLeave(enemy)
-		local x, y = enemy._root:getLoc()
-		if x > device.ui_width / 2 or x < -device.ui_width / 2 or y < -device.ui_height / 2 then
-			return true
-		end
-		return false
-	end
-	
 	function GamePlay:checkEnemysCreate()
 		local enemyCount = table.size(self._enemys)
-		if enemyCount <= 1 then
+		if enemyCount <= 5 then
 			local enemys = Formula:calcEnemys(self._waveIndex)
 			return enemys
 		end
@@ -276,12 +267,26 @@ local launcher = function()
 	
 	function GamePlay:createEnemys(enemys)
 		local ship = {_root = motherShip, _pic = motherShip}
-		for _, enemyInfo in ipairs(enemys) do
-			local enemy = ObjectFactory:createObject({name = enemyInfo.name})
-			uiLayer:add(enemy._root)
-			enemy:setBornPos(enemyInfo.pos)
-			enemy:beginAttack(ship, self._AS)
-			table.insert(self._enemys, enemy)
+		
+		if enemys.type == "normal" then
+			for key, enemyInfo in ipairs(enemys) do
+				local enemy = ObjectFactory:createObject({name = enemyInfo.name})
+				uiLayer:add(enemy._root)
+				enemy:setBornPos(enemyInfo.pos)
+				enemy:beginAttack(ship, self._AS)
+				table.insert(self._enemys, enemy)
+			end
+		elseif enemys.type == "team" then
+			for i = 1, enemys.count do
+				local enemy = ObjectFactory:createObject({name = enemys.name})
+				uiLayer:add(enemy._root)
+				enemy:setBornPos(enemys.pos)
+				local param = {}
+				param.randX = enemys.tbPosX
+				param.delay = (i - 1) * enemys.delay
+				enemy:beginAttack(ship, self._AS, param)
+				table.insert(self._enemys, enemy)
+			end
 		end
 	end
 	
