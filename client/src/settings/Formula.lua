@@ -4,8 +4,8 @@ local Formula = {}
 
 local enemyName = 
 {
-	"meteorolite",
-	"splitMeteorolite",
+	--"meteorolite",
+	--"splitMeteorolite",
 	"plane",
 	"battlePlane",
 }

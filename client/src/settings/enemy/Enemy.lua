@@ -1,6 +1,7 @@
 local Image = require "gfx.Image"
 local Sprite = require "gfx.Sprite"
 local device = require "device"
+local math2d = require "math2d"
 local interpolate = require "interpolate"
 
 
@@ -21,7 +22,7 @@ end
 function Enemy:destroy()
 	local explosion = self._root:add(Sprite.new(bombRoundEffect))
 	explosion:setBlendMode(MOAIProp.BLEND_ADD)
-	explosion.onDestroy = function()
+	explosion.onDestroyed = function()
 		print("----------destroy")
 		self._root:destroy()
 	end
@@ -71,6 +72,7 @@ function Enemy:beginAttack(hero, as)
 		local c = interpolate.makeCurve(0, 0, MOAIEaseType.LINEAR, timeLen, timeLen)
 		local fn = interpolate.newton2d(tbPosX, tbPosX, c)
 		
+		local oldX, oldY = 0, 0
 		local action = nil
 		action = as:run(function(dt, length)
 			if length >= c:getLength() then
@@ -80,6 +82,12 @@ function Enemy:beginAttack(hero, as)
 				local curX, curY = fn(length)
 				curY = cy:getValueAtTime(length)
 				self._root:setLoc(curX, curY)
+				local x = curX - oldX
+				local y = curY - oldY
+				local angle = math2d.angle(x, y)
+				self._root:setRot(angle + 90)
+				oldX = curX
+				oldY = curY
 			end
 		end)
 	end

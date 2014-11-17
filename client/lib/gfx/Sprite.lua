@@ -193,6 +193,10 @@ function Sprite.destroy(self)
 	if self._preSpriteDestroy then
 		self._preSpriteDestroy(self)
 	end
+	
+	if self.onDestroyed then
+		self:onDestroyed()
+	end
 end
 
 function Sprite.stopAnim(self)

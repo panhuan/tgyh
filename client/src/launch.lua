@@ -246,6 +246,8 @@ local launcher = function()
 				local eX, eY = enemy._root:getLoc()
 				local eW, eH = enemy._pic:getSize()
 				if math2d.segmentsIntersect(bX - bW / 2, bY - bH / 2, bX + bW / 2, bY + bH / 2, eX - eW / 2, eY - eH / 2, eX + eW / 2, eY + eH / 2) then
+					var:destroy()
+					table.remove(self._bullets, key)
 					return true
 				end
 			else
