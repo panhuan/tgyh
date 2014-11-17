@@ -22,11 +22,15 @@ function Enemy:create()
 end
 
 function Enemy:destroy()
-	local explosion = self._root:add(Particle.new(bombRoundEffect, mainAS))
-	explosion:begin()
-	explosion.onDestroyed = function()
+	local parent = self._root._parent
+	if parent then
+		local explosion = parent:add(Particle.new(bombRoundEffect, mainAS))
+		explosion:setLoc(self._root:getLoc())
+		explosion:begin()
+		explosion.onDestroyed = function()
+			self._alive = false
+		end
 		self._root:destroy()
-		self._alive = false
 	end
 end
 
