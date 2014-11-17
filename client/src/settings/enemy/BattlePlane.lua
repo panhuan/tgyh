@@ -4,7 +4,7 @@ local Enemy = require "settings.enemy.Enemy"
 
 local BattlePlane = class "BattlePlane" inherit "Enemy" define
 {
-	hp = 3,
+	hp = 2,
 	speed = 0.5,
 	damage = 4,
 	trajectory = "curve",
