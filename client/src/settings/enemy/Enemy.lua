@@ -7,7 +7,7 @@ local Particle = require "gfx.Particle"
 
 
 local bombRoundEffect = "pex/explosionHarvester.pex"
-local attackedRes = "gameplay.atlas.png#bomb_round?scl=0.5"
+local attackedRes = "gameplay.atlas.png#bomb_round?scl=0.3"
 
 local Enemy = class "Enemy" define {}
 
@@ -28,9 +28,6 @@ function Enemy:destroy()
 		local explosion = parent:add(Particle.new(bombRoundEffect, mainAS))
 		explosion:setLoc(self._root:getLoc())
 		explosion:begin()
-		explosion.onDestroyed = function()
-			self._alive = false
-		end
 		self._root:destroy()
 	end
 end
