@@ -7,6 +7,7 @@ local Particle = require "gfx.Particle"
 
 
 local bombRoundEffect = "pex/explosionHarvester.pex"
+local attackedRes = "gameplay.atlas.png#bomb_round?scl=0.5"
 
 local Enemy = class "Enemy" define {}
 
@@ -35,7 +36,7 @@ function Enemy:attacked()
 		self._alive = false
 		self:destroy()
 	else
-		local explosion = self._root:add(Sprite.new(bombRoundEffect))
+		local explosion = self._root:add(Sprite.new(attackedRes))
 		explosion:setBlendMode(MOAIProp.BLEND_ADD)
 	end
 end
