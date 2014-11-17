@@ -231,6 +231,9 @@ local launcher = function()
 			if self:checkEnemySmash(enemy) then
 				ObjectFactory:destroyObject({object = enemy})
 				table.remove(self._enemys, key)
+			elseif self:checkEnemyLeave(enemy) then
+				ObjectFactory:destroyObject({object = enemy})
+				table.remove(self._enemys, key)
 			end
 		end
 	end

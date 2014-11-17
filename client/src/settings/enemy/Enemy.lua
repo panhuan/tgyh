@@ -23,7 +23,7 @@ function Enemy:destroy()
 	explosion:setBlendMode(MOAIProp.BLEND_ADD)
 	explosion.onDestroy = function()
 		print("----------destroy")
-		--self._root:destroy()
+		self._root:destroy()
 	end
 end
 
@@ -59,9 +59,6 @@ function Enemy:beginAttack(hero, as)
 		local offsetY = heroY - y
 		local moveas = self._root:moveLoc(0, offsetY, timeLen, MOAIEaseType.LINEAR)
 		moveas:attach(as)
-		moveas:setListener(MOAIAction.EVENT_STOP, function()
-			self._root:destroy()
-		end)
 	elseif self.trajectory == "curve" then
 		local tbPosX = {}
 		table.insert(tbPosX, x)
@@ -79,7 +76,6 @@ function Enemy:beginAttack(hero, as)
 			if length >= c:getLength() then
 				action:stop()
 				action = nil
-				self._root:destroy()
 			else
 				local curX, curY = fn(length)
 				curY = cy:getValueAtTime(length)
