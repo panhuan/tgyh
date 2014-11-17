@@ -98,10 +98,11 @@ local launcher = function()
 	local SpaceCells = {
 		_list = {},
 	}
+	mainAS = actionset.new()
 	local GamePlay = {}
 	GamePlay._enemys = {}
 	GamePlay._bullets = {}
-	GamePlay._AS = actionset.new()
+	GamePlay._AS = mainAS
 	SpaceShip = {}
 	
 	local function index(x, y)
@@ -292,13 +293,18 @@ local launcher = function()
 	
 	ui.setDefaultTouchHandler(GamePlay)
 	
+	local shootCounter = 0
 	local function shoot(theta, interval)
 		local x, y = math2d.cartesian(theta, 2000)
 		for i, v in ipairs(SpaceCells._list) do
 			if v._bullet then
 				local tick = v._shootTick or 0
 				if tick < MOAISim.getElapsedTime() then
-					sound.new("bullet1.ogg", false):play()
+					if shootCounter == 0 then
+						shootCounter = 5
+						sound.new("bullet1.ogg", false):play()
+					end
+					shootCounter = shootCounter - 1
 					v._shootTick = MOAISim.getElapsedTime() + interval
 					local angle = math.deg(theta) - 90
 					v:setRot(angle)

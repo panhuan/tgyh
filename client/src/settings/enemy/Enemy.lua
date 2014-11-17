@@ -3,9 +3,10 @@ local Sprite = require "gfx.Sprite"
 local device = require "device"
 local math2d = require "math2d"
 local interpolate = require "interpolate"
+local Particle = require "gfx.Particle"
 
 
-local bombRoundEffect = "gameplay.atlas.png#bomb_round?scl=0.5"
+local bombRoundEffect = "pex/explosionHarvester.pex"
 
 local Enemy = class "Enemy" define {}
 
@@ -21,8 +22,8 @@ function Enemy:create()
 end
 
 function Enemy:destroy()
-	local explosion = self._root:add(Sprite.new(bombRoundEffect))
-	explosion:setBlendMode(MOAIProp.BLEND_ADD)
+	local explosion = self._root:add(Particle.new(bombRoundEffect, mainAS))
+	explosion:begin()
 	explosion.onDestroyed = function()
 		self._root:destroy()
 		self._alive = false

@@ -443,9 +443,9 @@ function resource.texture(file, transform)
 		printf("warning: Texture not found: %s", file_old)
 	end
 	if device.ram == device.RAM_LO then
-		transform = transform or MOAIImage.PREMULTIPLY_ALPHA + MOAIImage.QUANTIZE
+		transform = transform or MOAIImage.TRUECOLOR + MOAIImage.PREMULTIPLY_ALPHA + MOAIImage.QUANTIZE
 	else
-		transform = transform or MOAIImage.PREMULTIPLY_ALPHA
+		transform = transform or MOAIImage.TRUECOLOR + MOAIImage.PREMULTIPLY_ALPHA
 	end
 	if resource.isAsyncMode() then
 		if asyncLoadings[key] then

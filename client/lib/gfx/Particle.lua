@@ -81,6 +81,9 @@ function Particle:destroy()
 	end
 	self:cancel()
 	self:remove()
+	if self.onDestroyed then
+		self.onDestroyed()
+	end
 end
 
 function Particle:noop()

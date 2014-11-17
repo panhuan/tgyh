@@ -1,0 +1,38 @@
+<particleEmitterConfig>
+	<angle value="0.00" />
+	<angleVariance value="360.00" />
+	<blendFuncDestination value="1" />
+	<blendFuncSource value="770" />
+	<duration value="0.25" />
+	<emitterType value="0" />
+	<finishParticleSize value="60.00" />
+	<FinishParticleSizeVariance value="30.00" />
+	<finishColor red="0.10" green="0.30" blue="0.50" alpha="0.50" />
+	<finishColorVariance red="0.00" green="0.00" blue="0.00" alpha="0.20" />
+	<gravity x="0.00" y="0.00" />
+	<maxParticles value="40" />
+	<maxRadius value="100.00" />
+	<maxRadiusVariance value="0.00" />
+	<minRadius value="0.00" />
+	<particleLifeSpan value="0.4000" />
+	<particleLifespanVariance value="0.2000" />
+	<radialAccelVariance value="0.00" />
+	<radialAcceleration value="-200.00" />
+	<rotatePerSecond value="0.00" />
+	<rotatePerSecondVariance value="0.00" />
+	<rotationEnd value="0.00" />
+	<rotationEndVariance value="80.00" />
+	<rotationStart value="0.00" />
+	<rotationStartVariance value="50.00" />
+	<sourcePositionVariance x="10.00" y="10.00" />
+	<sourcePosition x="176.91" y="235.39" />
+	<speed value="32.89" />
+	<speedVariance value="0.00" />
+	<startColor red="0.20" green="0.30" blue="0.90" alpha="1.00" />
+	<startColorVariance red="0.00" green="0.00" blue="0.00" alpha="0.00" />
+	<startParticleSize value="40.00" />
+	<startParticleSizeVariance value="10.00" />
+	<tangentialAccelVariance value="0.00" />
+	<tangentialAcceleration value="0.00" />
+	<texture name="acid.png" />
+</particleEmitterConfig>
